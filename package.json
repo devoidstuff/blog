@@ -1,19 +1,19 @@
 {
-  "name": "dark-theme-blog",
+  "name": "dev.log",
   "version": "1.0.0",
-  "description": "A simple dark-themed blog to document electronics and Houdini projects.",
+  "description": "A blog to document electronics and Houdini projects.",
   "main": "dev.log/index.html",
   "scripts": {
     "start": "live-server dev.log",
     "build": "echo 'Build step not defined yet.'"
   },
   "keywords": [
-    "blog",
-    "dark-theme",
+    "mod",
+    "repair",
     "electronics",
     "Houdini"
   ],
-  "author": "Your Name",
+  "author": "devoid",
   "license": "MIT",
   "dependencies": {
     "live-server": "^1.2.1"
