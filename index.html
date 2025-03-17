@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Blog</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
+<style>
+body, html {
+  height: 100%;
+  font-family: "Inconsolata", monospace;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  margin: 0;
+}
+
+a {
+  color: #569cd6;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+header {
+  background-color: #252526;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  color: #d89610;
+  margin: 0;
+}
+
+.cover-image {
+  width: 100%;
+  height: 200px;
+  background-image: url('/images/dither_electronics.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.container {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+h2 {
+  color: #d89610;
+  margin-top: 20px;
+}
+
+footer {
+  background-color: #252526;
+  color: #808080;
+  text-align: center;
+  padding: 10px;
+  position: static;
+  bottom: 0;
+  width: 100%;
+}
+
+.flair {
+  display: inline-block;
+  background-color: #333; /* Darker background color */
+  color: #f0f0f0; /* Light text color */
+  padding: 2px 8px;
+  margin-right: 5px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.filter-section {
+  text-align: center;
+  margin: 20px 0 30px 0; /* Add more bottom space */
+}
+
+.filter-section button {
+  display: block; /* Ensure each button is on a new line */
+  background-color: #252526;
+  color: #d4d4d4;
+  border: 1px solid #444;
+  padding: 5px 10px;
+  margin: 10px 0; /* Adjust spacing between buttons */
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.filter-section button:hover {
+  background-color: #444;
+}
+
+body {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #252526;
+  padding: 20px;
+  box-sizing: border-box;
+  position: fixed; /* Make the sidebar fixed */
+  height: 100%; /* Ensure it spans the full height of the viewport */
+  overflow-y: auto; /* Add scrolling if content overflows */
+}
+
+.sidebar h3 {
+  color: #d89610;
+  margin-top: 0;
+}
+
+.sidebar a {
+  display: block; /* Ensure each link is on a new line */
+  margin: 10px 0; /* Adjust spacing */
+  background-color: transparent; /* Remove background box */
+  color: #f0f0f0; /* Keep light text color */
+  padding: 0; /* Remove padding */
+  text-align: left; /* Align text to the left */
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  text-decoration: underline; /* Keep underline on hover */
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-left: 270px; /* Add margin to account for the fixed sidebar */
+}
+
+article {
+  margin-bottom: 30px; /* Increased space between posts */
+  padding-bottom: 15px; /* Increased padding below content */
+  border-bottom: 1px solid #444; /* Subtle separator inspired by code */
+}
+
+article:last-child {
+  border-bottom: none; /* Remove separator for the last post */
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <h3>Filter</h3>
+  <div class="filter-section">
+    <button onclick="filterPosts('electronics')">Electronics</button>
+    <button onclick="filterPosts('houdini')">Houdini</button>
+    <button onclick="filterPosts('all')">All</button>
+  </div>
+
+  <h3>Posts</h3>
+  <a href="#post1">LED Blinker</a>
+  <a href="#post2">FM Radio Receiver</a>
+  <a href="#post3">Procedural Houdini Assets</a>
+</div>
+
+<div class="main-content">
+  <div class="cover-image"></div>
+
+  <header>
+    <h1>dev.log</h1>
+    <p>Documenting random stuff</p>
+  </header>
+
+  <div class="container">
+    <div id="posts-container"></div>
+  </div>
+</div>
+
+<script>
+  const posts = [
+    { file: "posts/post.html", flair: "electronics", id: "post1" },
+    { file: "posts/post2.html", flair: "electronics", id: "post2" },
+    { file: "posts/post3.html", flair: "houdini", id: "post3" }
+  ];
+
+  const postsContainer = document.getElementById('posts-container');
+
+  posts.forEach(post => {
+    fetch(post.file)
+      .then(response => response.text())
+      .then(content => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(content, 'text/html');
+        const article = doc.querySelector('article');
+        if (article) {
+          const postElement = document.createElement('article');
+          postElement.id = post.id; // Add ID for linking
+          postElement.innerHTML = `
+            <span class="flair">${post.flair}</span>
+            ${article.innerHTML}
+          `;
+          postsContainer.appendChild(postElement);
+        }
+      })
+      .catch(error => console.error(`Error loading ${post.file}:`, error));
+  });
+
+  function filterPosts(flair) {
+    const articles = document.querySelectorAll('#posts-container article');
+    articles.forEach(article => {
+      const flairElement = article.querySelector('.flair');
+      if (flair === 'all' || (flairElement && flairElement.textContent === flair)) {
+        article.style.display = '';
+      } else {
+        article.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
