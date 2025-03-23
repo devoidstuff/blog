@@ -25,31 +25,35 @@ a:hover {
 
 header {
   background-color: #252526;
-  padding: 20px;
-  text-align: center;
+  padding: 60px 60px 20px 20px; /* Adjust padding to move text closer to the bottom */
+  text-align: right; /* Align text to the right */
+  border-bottom: 2px solid #373634; /* Add a subtle border for separation */
 }
 
 header h1 {
-  color: #d89610;
+  color: #d7ba70;
+  font-size: 2.5em; /* Increase font size for emphasis */
   margin: 0;
 }
 
+header p {
+  color: #d4d4d4;
+  font-size: 1.2em; /* Slightly larger font for better readability */
+  margin-top: 10px;
+}
+
 .cover-image {
-  width: 100%;
-  height: 200px;
-  background-image: url('/images/dither_electronics.jpg');
-  background-size: cover;
-  background-position: center;
+  display: none; /* Hide the cover image */
 }
 
 .container {
-  padding: 20px;
+  padding: 40px;
   max-width: 800px;
   margin: auto;
 }
 
 h2 {
-  color: #d89610;
+  color: #d7ba70;
   margin-top: 20px;
 }
 
@@ -65,12 +69,20 @@ footer {
 
 .flair {
   display: inline-block;
-  background-color: #333; /* Darker background color */
-  color: #f0f0f0; /* Light text color */
+  background-color: #333; /* Neutral background */
+  color: #569cd6; /* Default flair color */
   padding: 2px 8px;
   margin-right: 5px;
   border-radius: 4px;
   font-size: 0.9em;
+}
+
+.flair.electronics {
+  color: #4ec9b0; /* Soft green for electronics */
+}
+
+.flair.houdini {
+  color: #c586c0; /* Soft purple for Houdini */
 }
 
 .filter-section {
@@ -81,12 +93,17 @@ footer {
 .filter-section button {
   display: block; /* Ensure each button is on a new line */
   background-color: #252526;
-  color: #d4d4d4;
+  color: #ffffff; /* Make the flair buttons white */
   border: 1px solid #444;
   padding: 5px 10px;
   margin: 10px 0; /* Adjust spacing between buttons */
   cursor: pointer;
   border-radius: 4px;
+}
+
+.filter-section button.electronics,
+.filter-section button.houdini {
+  color: #ffffff; /* Keep the flair buttons white */
 }
 
 .filter-section button:hover {
@@ -108,7 +125,7 @@ body {
 }
 
 .sidebar h3 {
-  color: #d89610;
+  color: #ca96b4;
   margin-top: 0;
 }
 
@@ -149,8 +166,8 @@ article:last-child {
 <div class="sidebar">
   <h3>Filter</h3>
   <div class="filter-section">
-    <button onclick="filterPosts('electronics')">Electronics</button>
-    <button onclick="filterPosts('houdini')">Houdini</button>
+    <button class="electronics" onclick="filterPosts('electronics')">Electronics</button>
+    <button class="houdini" onclick="filterPosts('houdini')">Houdini</button>
     <button onclick="filterPosts('all')">All</button>
   </div>
 
@@ -161,8 +178,6 @@ article:last-child {
 </div>
 
 <div class="main-content">
-  <div class="cover-image"></div>
-
   <header>
     <h1>dev.log</h1>
     <p>Documenting random stuff</p>
@@ -193,7 +208,7 @@ article:last-child {
           const postElement = document.createElement('article');
           postElement.id = post.id; // Add ID for linking
           postElement.innerHTML = `
-            <span class="flair">${post.flair}</span>
+            <span class="flair ${post.flair}">${post.flair}</span>
             ${article.innerHTML}
           `;
           postsContainer.appendChild(postElement);
